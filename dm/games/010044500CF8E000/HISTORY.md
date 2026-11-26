@@ -1,0 +1,1 @@
+- `2026-11-26T14:35:07` **deploy** [PASS]: Hellblade standalone kiosk APK deployed to Lenovo Legion Y700 Gen 4; booted successfully and ran steadily for 15s at 60 FPS with Turnip Adreno 830 driver

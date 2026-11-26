@@ -20,3 +20,14 @@ HANDOFF*.md
 ONDEVICE*.md
 STUTTER-TEST*.md
 *.internal.md
+
+# Local porting loop, kiosk builds, and scratch captures
+/.fork-*
+/builds/
+/android/app/src/kiosk-*/
+/android/app/src/discoelysium/
+/screen_*.png
+/seaofstars_*.png
+/*.log
+*.bak
+

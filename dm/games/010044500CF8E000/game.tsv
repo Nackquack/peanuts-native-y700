@@ -1,0 +1,50 @@
+# Hellblade: Senua's Sacrifice (010044500CF8E000), Ninja Theory / QLOC, Unreal Engine 4, NVN.
+# Target: Lenovo Legion Y700 Gen 4 (Snapdragon 8 Elite SM8750P, Adreno 830, Android 16 16KB Page Kernel)
+
+# ---- Identity ----
+title_id	010044500CF8E000
+program_id	010044500CF8E000
+name	Hellblade: Senua's Sacrifice
+ipa	Hellblade.ipa
+app_category	public.app-category.games
+
+# ---- Versions ----
+build	v0	1.0.0	main=052fcb358955ed489217313a058d7a29	subsdk0=1bfa289d84f5608331f88deedf2005c1	sdk=6bfe1085ed54bdf0dcc5d0ea0262b7c3
+package	v0
+shader_versions	v0
+
+# ---- Files ----
+modules	main subsdk0 sdk
+romfs_marker	HellbladeGame/Content/Paks/HellbladeGame-Switch.pak
+zip_store	.pak
+
+# ---- Memory ----
+# nninitStartup reserves address region for the engine, capped via game_args / OBS_UE_REGION.
+game_args	-SwitchVirtualAddressSpaceSize=4064
+mem_reserve	0x140000000
+mem_alias	0x118000000
+mem_stack	0x10000000
+app_pool	0xCD500000
+sys_resource	0x2800000
+
+# ---- Performance & Frame Pacing ----
+# Target 60 FPS rock-solid pacing on Y700 165Hz display with cool thermal envelope (<5W).
+# ue_cvar.py automatically discovers t.MaxFPS (0x521d770) and nvn.SyncInterval (0x523c108).
+present_interval	display
+fps_target	60
+fps_limit	60
+fps_limit_max	120
+ue_texture_pool	512
+docked	1
+
+# ---- Input ----
+pad_layout	full
+
+# ---- Recommended Settings (Launcher & Runtime) ----
+recommend	any	fps_cap=30
+recommend	any	upscaler=bilinear
+recommend	any	driver=18
+
+# ---- Shaders ----
+shader_groups	ShaderArchive-Global-=global ShaderArchive-=game
+shader_note	Hellblade: Senua's Sacrifice UE4 Shaders (19,289 shaders split)

@@ -334,11 +334,30 @@ int vka_fg_frame(uint64_t serial, const int *crop, double period, uint64_t fence
     for (size_t g = 0; g < ng; g++) lsfg_chain_generate(F.chain, cb, count, ng, g);
     vka_barrier(cb);   // the outputs for the presents after this
     vk.vkEndCommandBuffer(cb);
+    // PEANUTS: pre-wait V.tl and drain pending Turnip gates before submitting the frame-gen batch so Turnip/KGSL
+    // cannot defer fg_cb behind an unsignaled host-signalled timeline wait while present_one(&gi) (gi.fence == 0)
+    // jumps ahead and reads a stale or concurrently-overwritten F.out[0].
+    int fg_waited = 0;
+    if (fence && !vka_hung() && fence <= __atomic_load_n(&V.tl_queued, __ATOMIC_ACQUIRE)) {
+        VkResult vka_tl_wait(VkSemaphore s, uint64_t v, uint64_t timeout_ns);
+        if (vka_tl_wait(V.tl, fence, vka_hang_ns()) == VK_SUCCESS) fg_waited = 1;
+    }
+    uint64_t gw_ns = (uint64_t)(VKA_ENVF("DM_VK_PRESENT_GATE_WAIT", V.driver_id == VK_DRIVER_ID_MESA_TURNIP ? 30.0 : 0.0) * 1e6), gw_t0 = now_ns();
+    for (;;) {
+        pthread_mutex_lock(&V.qmu);
+        if (vka_hung() || !vka_gate_pending() || !gw_ns || now_ns() - gw_t0 >= gw_ns) break;
+        pthread_mutex_unlock(&V.qmu);
+        vka_gate_drain(gw_ns - (now_ns() - gw_t0));
+    }
+    uint64_t wfence = fence;
+    if (wfence > V.tl_queued) wfence = V.tl_queued;
+    int need_tl = wfence && !fg_waited;
     VkPipelineStageFlags st = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
-    VkTimelineSemaphoreSubmitInfo ti = {VK_STRUCTURE_TYPE_TIMELINE_SEMAPHORE_SUBMIT_INFO, .waitSemaphoreValueCount = 1, .pWaitSemaphoreValues = &fence};
-    VkSubmitInfo si = {VK_STRUCTURE_TYPE_SUBMIT_INFO, .pNext = &ti, .waitSemaphoreCount = fence ? 1 : 0, .pWaitSemaphores = &V.tl, .pWaitDstStageMask = &st,
+    VkTimelineSemaphoreSubmitInfo ti = {VK_STRUCTURE_TYPE_TIMELINE_SEMAPHORE_SUBMIT_INFO, .waitSemaphoreValueCount = need_tl ? 1u : 0u, .pWaitSemaphoreValues = &wfence};
+    VkSubmitInfo si = {VK_STRUCTURE_TYPE_SUBMIT_INFO, .pNext = need_tl ? &ti : NULL, .waitSemaphoreCount = need_tl ? 1u : 0u, .pWaitSemaphores = &V.tl, .pWaitDstStageMask = &st,
                        .commandBufferCount = 1, .pCommandBuffers = &cb};
-    pthread_mutex_lock(&V.qmu); VkResult r = vk.vkQueueSubmit(V.q, 1, &si, F.fr[k].fence); pthread_mutex_unlock(&V.qmu);
+    VkResult r = vka_hung() ? VK_ERROR_DEVICE_LOST : vk.vkQueueSubmit(V.q, 1, &si, F.fr[k].fence);
+    pthread_mutex_unlock(&V.qmu);
     F.fr[k].held = im;   // the window texture stays alive until this submission is done
     if (r) { static _Atomic int n; if (atomic_fetch_add(&n, 1) < 8) VRED("frame generation submission %d", r); ng = 0; }
     { static int last, left; int d = VKA_ENV("DM_LSFG_DUMP", 0);   // (see fg_dump)
