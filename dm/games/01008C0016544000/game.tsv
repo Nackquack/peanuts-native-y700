@@ -16,9 +16,12 @@ ipa	SeaOfStars.ipa
 app_category	public.app-category.games
 
 # ---- Versions ----
+build	v0	1.0.45861	main=092cd60ef7c038ef934191dbb6011809	subsdk0=ff0149d0b5e882b87c2f06a981302b13	sdk=3053b22935e32ddf15ef81997603e5c2
 build	v786432	2.0.59001	main=1399a83376b1b1c2e5756fbdf7491956	subsdk0=ff0149d0b5e882b87c2f06a981302b13	sdk=3053b22935e32ddf15ef81997603e5c2
-package	v786432
-shader_versions	v786432
+build	v983040	3.0.60151a	main=a98aed47b317106cce87c4a682916216	subsdk0=ff0149d0b5e882b87c2f06a981302b13	sdk=3053b22935e32ddf15ef81997603e5c2
+package	v0
+android_builds	v0 v786432 v983040
+shader_versions	v0 v786432 v983040
 
 # ---- Files ----
 # load order as on Horizon: main, subsdk*, sdk (subsdk0 = NintendoSDK_movie)
@@ -37,6 +40,7 @@ mem_reserve	0x140000000
 mem_alias	0x118000000
 mem_stack	0x10000000
 app_pool	0x60000000
+mem_map_limit	off
 
 # ---- Input ----
 pad_layout	full
@@ -45,3 +49,7 @@ pad_layout	full
 # everything is under Data/: the player's serialized files and the StreamingAssets bundles
 shader_groups	/Data/=data
 shader_note	Sea of Stars shaders
+
+# ---- Recommended settings (Turnip driver required for full draw rendering on Adreno 830) ----
+recommend	any	driver=18
+driver	Turnip_T30_MrPurple

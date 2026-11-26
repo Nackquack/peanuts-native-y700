@@ -1,5 +1,5 @@
-# kind: evidence  Sea of Stars shaders (provisional profile) (Unity Shader / GLSLC in RomFS + main) → control section + code area keys (dm/gfx/tools/shader_split.py)
-# column 5 records where each key first appears; this game has no PC version to pair with
+# kind: evidence  Sea of Stars shaders (Unity Shader / GLSLC in RomFS + main) → control section + code area keys (dm/gfx/tools/shader_split.py)
+# column 5 records where each key first appears; no PC shader pairing supplied
 package	index	stage	dm_ctl_sha16	source
 vs_data.bin	0	vertex	3ea6f962e0a3d9e4	/Data/Resources/unity default resources#GUI/Text Shader#var19.3
 ps_data.bin	0	pixel	5405484cb9dbb659	/Data/Resources/unity default resources#GUI/Text Shader#var19.3
@@ -3888,14 +3888,14 @@ vs_data.bin	1896	vertex	558fc7ddb2293c9e	/Data/resources.assets#Standard#var19.9
 cs_data.bin	89	compute	45dc06ad504d926c	/Data/resources.assets#Texture3DSlicer#CSMain.0
 vs_data.bin	1897	vertex	09cb74b9a708c101	/Data/resources.assets#Unlit/Texture#var19.1
 ps_data.bin	1897	pixel	f5d559cb61bbdee0	/Data/resources.assets#Unlit/Texture#var19.1
-vs_main.bin	0	vertex	24e4cd391d993137	main#GLSLC@0x5616db0
-vs_main.bin	1	vertex	d19b47f9ea5c3cfe	main#GLSLC@0x5617970
-ps_main.bin	0	pixel	17b082dfef30eba9	main#GLSLC@0x5618630
-ps_main.bin	1	pixel	889465df59838dc0	main#GLSLC@0x56192f0
-ps_main.bin	2	pixel	e46f75eec323df1d	main#GLSLC@0x561a0b0
-ps_main.bin	3	pixel	a23dda46c07f800d	main#GLSLC@0x561af70
-ps_main.bin	4	pixel	bf76784f461275c7	main#GLSLC@0x561bc30
-ps_main.bin	5	pixel	abcdb66b44f1313d	main#GLSLC@0x561c9f0
-vs_main.bin	2	vertex	f3a2af4f812f7366	main#GLSLC@0x561d8b0
-ps_main.bin	6	pixel	987c069874bbe974	main#GLSLC@0x561e470
-cs_main.bin	0	compute	552bbc8ffc2459e4	main#GLSLC@0x561f030
+vs_main.bin	0	vertex	24e4cd391d993137	main#GLSLC@0x5632338
+vs_main.bin	1	vertex	d19b47f9ea5c3cfe	main#GLSLC@0x5632ef8
+ps_main.bin	0	pixel	17b082dfef30eba9	main#GLSLC@0x5633bb8
+ps_main.bin	1	pixel	889465df59838dc0	main#GLSLC@0x5634878
+ps_main.bin	2	pixel	e46f75eec323df1d	main#GLSLC@0x5635638
+ps_main.bin	3	pixel	a23dda46c07f800d	main#GLSLC@0x56364f8
+ps_main.bin	4	pixel	bf76784f461275c7	main#GLSLC@0x56371b8
+ps_main.bin	5	pixel	abcdb66b44f1313d	main#GLSLC@0x5637f78
+vs_main.bin	2	vertex	f3a2af4f812f7366	main#GLSLC@0x5638e38
+ps_main.bin	6	pixel	987c069874bbe974	main#GLSLC@0x56399f8
+cs_main.bin	0	compute	552bbc8ffc2459e4	main#GLSLC@0x563a5b8
